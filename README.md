@@ -8,9 +8,12 @@ This project contains the following artifacts:
 
 # Pull Image from CBIIT Nexus Docker Repo
 1. login to CBIIT Nexus Docker Repo with your Nexus Docker credentials
+
    docker login -u userID -p yourPassword -uO ncidockerhub.nci.nih.gov/docker-linux-poc
 
-2. docker pull ncidockerhub.nci.nih.gov/docker-linux-poc/centos-base-image:1.0
+2. Pull the image
+
+   docker pull ncidockerhub.nci.nih.gov/docker-linux-poc/centos-base-image:1.0
 
 # Build your own Image from this baseline
    
