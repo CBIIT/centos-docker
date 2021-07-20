@@ -1,3 +1,6 @@
+#Setting your environment variable - This an example to set your environment to a sample Docker Hub repo - The userID here is your docker hub userID
+#Make sure you already have your repo folder strucutre already setup in Docker Hub.
+#registryCredential: This variable represents the credentials variable name that you created in Jenkins for accessing the Docker Hub Repo.
 pipeline {
   environment {
     registry = "nrizk83/centos-base-image"
@@ -5,13 +8,19 @@ pipeline {
     dockerImage = ''
   }
   agent any
-
+  
+  #Stage1: Clone the Repo from GitHub
   stages {
     stage('Cloning Git') {
       steps {
         git 'https://github.com/CBIIT/centos-docker.git'
       }
     }
+    
+    #Stage2: Build the docker image and assign a build number
+    #Office365ConnectorSend: This is a MSTeams plugin that needs to be installed in Jenkins & your Teams Channel should be configured with a Webhook
+    #Once configured, copy and paste the Webhook URL here.
+    #Since Webhook URLs are not enabled at NCI, feel free to replace this part with an email notification from Jenkins.
     stage('Building image') {
       steps{
         script {
@@ -22,6 +31,9 @@ pipeline {
             status: 'Success'
       }
     }
+    
+    #Stage3: Run the Docker image in docker environment
+    #Jenkins must be configured to run Docker commands!
     stage('Run docker image') {
       steps{
         sh "docker run -id --name CentOSBaseOS_8 $registry:$BUILD_NUMBER /bin/bash"
@@ -30,6 +42,8 @@ pipeline {
             status: 'Success'
       }
     }
+    
+    #Stage4: Push image to the sample docker hub registry 
     stage('Deploy Image') {
       steps{
         script {
@@ -42,6 +56,10 @@ pipeline {
             status: 'Success'
       }
     }
+    
+    #Stage5: Push Image to the CBIIT Nexus Docker Registry
+    #It is not a best practice to pass on a username and password for docker login command - THIS WAS DONE FOR Proof of Concept purpses only! 
+    #In order to parameterize this, create a similar credential vault lik the one above in Jenkins, define the variable on top, and pass it to this command here.
     stage('Deploy Image to CBIIT Docker Registry') {
       steps{
          sh "docker tag $registry:$BUILD_NUMBER ncidockerhub.nci.nih.gov/docker-linux-poc/centos-base-image:1.0"
