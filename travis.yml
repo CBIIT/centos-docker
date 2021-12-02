@@ -1,14 +1,4 @@
-
 language: ruby
-
-services:
-  - docker
-
-before_install:
-  - echo "Testing Travis 1.1"
-
-script:
-  - docker ps -a
-
-after_success:
-  - echo "Testing Travis 2.1"
+rvm:
+ - 2.2
+ - jruby
