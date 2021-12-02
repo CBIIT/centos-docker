@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - '11.14.0'
+
+sudo: true
+
+branches:
+  only:
+  - /.*/
+  
+before_install:
+  - echo 'test'
+
+before_script:
+  - echo 'test'
+
+script:
+  - echo 'test'
+
+
+after_success: 
+  - echo 'test'
